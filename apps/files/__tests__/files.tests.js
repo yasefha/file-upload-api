@@ -4,6 +4,7 @@ const request = require('supertest');
 const fs = require('fs');
 const path = require('path');
 const app = require('../../../app');
+require('./setupStorage');
 
 const STORAGE_PATH = path.join(__dirname, '../../storage');
 
