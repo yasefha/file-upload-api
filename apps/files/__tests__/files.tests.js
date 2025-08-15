@@ -4,7 +4,8 @@ const request = require('supertest');
 const fs = require('fs');
 const path = require('path');
 const app = require('../../../app');
-const { STORAGE_PATH } = require('../../../libraries/env-loader/env');
+
+const STORAGE_PATH = path.join(__dirname, '../../storage');
 
 describe('File Upload API', () => {
     const testFilePath = path.join(__dirname, 'testfile.jpg');
@@ -12,7 +13,7 @@ describe('File Upload API', () => {
 
     // Create dummy file before test
     beforeAll(() => {
-        if (!fs.existsSync(STORAGE_PATH)) fs.mkdirSync(STORAGE_PATH);
+        if (!fs.existsSync(STORAGE_PATH)) fs.mkdirSync(STORAGE_PATH, { recursive: true });
         fs.writeFileSync(testFilePath, 'Hello world');
     });
 
@@ -23,6 +24,13 @@ describe('File Upload API', () => {
             const filePath = path.join(STORAGE_PATH, file);
             if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
         });
+
+        // Optional
+        try {
+            fs.rmdirSync(STORAGE_PATH);
+        } catch (err) {
+            
+        }
     });
 
     test('POST /files/upload/single - should upload a single file', async () => {
@@ -39,7 +47,7 @@ describe('File Upload API', () => {
         const res = await request(app)
             .post('/files/upload/multiple')
             .attach('files', testFilePath)
-            .attach('files', testFilePath)
+            .attach('files', testFilePath);
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('files');
