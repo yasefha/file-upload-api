@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { STORAGE_PATH } = require('../../../libraries/env-loader/env');
+const STORAGE_PATH = require('../setupStorage');
 
 function saveFile(file) {
     // File has saved by multer, just return filename
