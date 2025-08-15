@@ -2,7 +2,8 @@
 
 const multer = require('multer');
 const path = require('path');
-const { STORAGE_PATH, MAX_FILE_SIZE, ALLOWED_TYPES } = require('../../../libraries/env-loader/env');
+const STORAGE_PATH = require('../setupStorage');
+const { MAX_FILE_SIZE, ALLOWED_TYPES } = require('../../../libraries/env-loader/env');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
